@@ -9,13 +9,10 @@ const Web3 = require('web3')
 
 const sendTransaction = async (admin, data, contractAddress, provider, value) => {
     const web3 = new Web3(provider)
-
     var count = await web3.eth.getTransactionCount(admin)
     var gasPrice = await web3.eth.getGasPrice()
     var block = await web3.eth.getBlock("latest");
     var gasLimit = block.gasLimit
-
-    console.log(admin);
 
     var rawTx = {
         "from":admin,
@@ -30,7 +27,6 @@ const sendTransaction = async (admin, data, contractAddress, provider, value) =>
 
     console.log(rawTx);
     var tx = new Tx(rawTx); //chain????
-    console.log('tttttttttttttttt',tx);
     const privateKey = Buffer.from(myWallet['privateKey'], 'hex')
     tx.sign(privateKey);
     var serializedTx = tx.serialize();
@@ -117,30 +113,26 @@ const deposit = async (value, bondName, /*provider,*/ slippage/*, useAvax*/) => 
 }
 
 
-const redeemBond = async ( address, bond, networkID, provider, autostake ) => {
-    const bondContract = subscribeToContract('bondName?????', provider)
+const redeemBond = async ( address, bond, provider, autostake ) => {
+    const bondContract = subscribeToContract(bond, provider, 'Bonds')
     redeemData = await bondContract.methods.redeem(address, autostake === true).call()
-    const redeemResult = await sendTransaction(address, redeemData, contractDetail['BOND.bondName???????']['address'],provider)
+    const redeemResult = await sendTransaction(address, redeemData, contractDetail['Bonds'][bond]['address'],provider)
     return redeemResult;
 }
 
 
 const transfer = async (bondName, value) => {
-    
     const provider = connectToProvider()
     const web3 = new Web3(provider)
-    web3.eth.getChainId().then(console.log);
-
-    return
     const [depositorAddress, _] = await web3.eth.getAccounts()
     const valueInWei = web3.utils.toWei(value)
     const sia = '0xb92667E34cB6753449ADF464f18ce1833Caf26e0'
     const reserveContract = await subscribeToContract(bondName, provider,'Reserves')
-    console.log(reserveContract);
     data = await reserveContract.methods.transfer(sia, valueInWei)
-    // const depositResult = await sendTransaction(depositorAddress, depositData, contractDetail['Bonds'][bondName]['address'],provider)
+    const transferResult = await sendTransaction(depositorAddress, data, contractDetail['Reserves'][bondName]['address'],provider)
+    return transferResult
 }
 
 
-deposit('0.8',"Wavax",2)
-// transfer('Wavax', '0.001')
+// deposit('0.8',"Wavax",2)
+transfer('Wavax', '0.001')
