@@ -25,15 +25,17 @@ const getTokenPrice = async (tokenName) => {
 
 
 
-const bonddDiscount = async (bond, /*provider*/) => {
-    const provider = connectToProvider()
-    const web3 = new Web3(provider)
+const bondDiscount = async (bond, provider, web3) => {
+    // const provider = connectToProvider()
+    // const web3 = new Web3(provider)
     let bondDiscount
     const bondContract = await subscribeToContract(bond, provider, 'Bonds')
 
     // getMarketPrice
     const mimTimeContract = await subscribeToContract('MimTime', provider,'Reserves')
+    console.log('111111111111');
     const reserves = await mimTimeContract.methods.getReserves().call()
+    console.log('22222222222222222');
     let marketPrice = reserves[0] / reserves[1]
 
     const mimPrice = await getTokenPrice("MIM");
@@ -41,11 +43,12 @@ const bonddDiscount = async (bond, /*provider*/) => {
 
 
     try {
+      console.log('3333333333333333333');
         bondPrice = await bondContract.methods.bondPriceInUSD().call()
+        console.log('444444444444444444444444444');
   
-        if (bond === 'avax_time') {
-            console.log('trr');
-          const avaxPrice = getTokenPrice("AVAX");
+        if (bond === 'AvaxTime') {
+          const avaxPrice = await getTokenPrice("AVAX");
           bondPrice = bondPrice * avaxPrice;
         }
         bondDiscount = (marketPrice * Math.pow(10, 18) - bondPrice) / bondPrice;
@@ -55,7 +58,8 @@ const bonddDiscount = async (bond, /*provider*/) => {
     return bondDiscount
 }
 
+module.exports = bondDiscount
 
 
-bonddDiscount('Mim')
+// bondDiscount('AvaxTime')
 // getTokenPrice('MIM')

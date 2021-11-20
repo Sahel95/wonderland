@@ -12,15 +12,12 @@ const sendTransaction = async (admin, data, contractAddress, provider, value) =>
     const web3 = new Web3(provider)
     var count = await web3.eth.getTransactionCount(admin)
     var gasPrice = await web3.eth.getGasPrice()
-
-    console.log('count::::::::::', count);
-
-
-    // TO DO: gasLimit
-    // var block = await web3.eth.getBlock("latest");
-    // var gasLimit = block.gasLimit
-    // console.log(gasLimit);
-
+    var gasLimit = await web3.eth.estimateGas({
+        "from"      : admin,       
+        "nonce"     : web3.utils.toHex(count), 
+        "to"        : contractAddress,     
+        "data"      : data.encodeABI()
+   })
     var common = ethereumjs_common.forCustomChain (
         'ropsten', { networkId: 43114, chainId: 43114, name: 'geth' },
         'muirGlacier'
@@ -30,7 +27,7 @@ const sendTransaction = async (admin, data, contractAddress, provider, value) =>
     var rawTx = {
         "from":admin,
         "gasPrice":web3.utils.toHex(gasPrice),
-        "gasLimit":web3.utils.toHex(245064),
+        "gasLimit":web3.utils.toHex(gasLimit),
         "to":contractAddress,
         // "value":web3.utils.toHex(value),
         "data":data.encodeABI(),
@@ -97,18 +94,19 @@ const deposit = async (value, bondName, /*provider,*/ slippage/*, useAvax*/) => 
 }
 
 
-const redeem = async (  /* address, bond,provider, web3*/ ) => {
+const redeem = async ( bond,provider, web3 ) => {
+    // const bond = 'MimTime'
+    const receiptAddress = '0xb92667E34cB6753449ADF464f18ce1833Caf26e0'
 
-    const bond = 'MimTime'
-    const address = '0xb92667E34cB6753449ADF464f18ce1833Caf26e0'
+    // const provider = connectToProvider()
+    // const web3 = new Web3(provider)
 
-    const provider = connectToProvider()
-    const web3 = new Web3(provider)
-    // const [address, _] = await web3.eth.getAccounts()
+    const [admin, _] = await web3.eth.getAccounts()
     
     const bondContract = await subscribeToContract(bond, provider, 'Bonds')
-    redeemData = await bondContract.methods.redeem(address, true)
-    const redeemResult = await sendTransaction(address, redeemData, contractDetail['Bonds'][bond]['address'],provider)
+    redeemData = await bondContract.methods.redeem(receiptAddress, true)
+    return
+    const redeemResult = await sendTransaction(admin, redeemData, contractDetail['Bonds'][bond]['address'],provider)
     return redeemResult;
 }
 
@@ -125,7 +123,7 @@ const changeApproval = async (bondName, provider, address) => {
     // if avax_time or mim_time:
     // balance = ethers.utils.formatUnits(balance, "ether")
 }
-redeem()
+// redeem()
 
 module.exports = {
     deposit,

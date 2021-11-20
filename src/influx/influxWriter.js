@@ -2,7 +2,7 @@ const {InfluxDB, Point, HttpError} = require('@influxdata/influxdb-client')
 const {url, token, org, bucket} = require('./client')
 const {hostname} = require('os')
 
-const influxWriter = async (discount, bond) => {
+const influxWriter = async (bond, discount) => {
     const tableName = `${bond}`
 
     const client = new InfluxDB({

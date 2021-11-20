@@ -5,6 +5,6 @@
 //   Wavax: "wavax",
 // };
 
-const Bonds = [Mim, MimTime, AvaxTime, Wavax]
+const Bonds = ['Mim', 'MimTime', 'AvaxTime', 'Wavax']
 
-module.exports = BONDS
+module.exports = Bonds
