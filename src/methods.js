@@ -29,7 +29,7 @@ const sendTransaction = async (admin, data, contractAddress, provider, value) =>
 
     var rawTx = {
         "from":admin,
-        "gasPrice":web3.utils.toHex(25000000000),
+        "gasPrice":web3.utils.toHex(gasPrice),
         "gasLimit":web3.utils.toHex(245064),
         "to":contractAddress,
         // "value":web3.utils.toHex(value),
@@ -98,7 +98,7 @@ const deposit = async (value, bondName, /*provider,*/ slippage/*, useAvax*/) => 
 
 
 const redeem = async (  /* address, bond,provider, web3*/ ) => {
-    
+
     const bond = 'MimTime'
     const address = '0xb92667E34cB6753449ADF464f18ce1833Caf26e0'
 
