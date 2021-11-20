@@ -1,8 +1,10 @@
-const BONDS = {
-  mim: "mim",
-  mim_time: "mim_time_lp",
-  avax_time: "avax_time_lp",
-  wavax: "wavax",
-};
+// const BONDS = {
+//   Mim: "mim",
+//   MimTime: "mim_time_lp",
+//   AvaxTime: "avax_time_lp",
+//   Wavax: "wavax",
+// };
+
+const Bonds = [Mim, MimTime, AvaxTime, Wavax]
 
 module.exports = BONDS

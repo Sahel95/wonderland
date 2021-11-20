@@ -42,7 +42,7 @@ const timeUntilRebase = async () => {
 
     if (currentBlockTime && nextRebase) {
         const seconds = secondsUntilBlock(currentBlockTime, nextRebase);
-        // return prettifySeconds(seconds);
+        return prettifySeconds(seconds);
         console.log(seconds);
         return seconds
       }

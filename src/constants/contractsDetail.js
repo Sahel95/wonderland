@@ -9,7 +9,6 @@ const contractsDetail = {
         address: '0x4456B87Af11e87E329AB7d7C7A246ed1aC2168B9',
         abi: JSON.parse(readFileSync('./src/constants/mine-abi/TimeStaking.json'))
     },
-    
     MerkleDistributor : { //claim
         address: '0xFACA6B40DD0130b4Fc4f6b8E4501375E9b623a86',
         abi: JSON.parse(readFileSync('./src/constants/mine-abi/MerkleDistributor.json'))
@@ -41,8 +40,8 @@ const contractsDetail = {
             abi: JSON.parse(readFileSync('./src/constants/mine-abi/WavaxToken.json'))
         },
     },
-    Bonds: {
-        Mim : { //bond:deposit, redeem
+    Bonds: { //deposit, redeem
+        Mim : { 
             address: '0x694738E0A438d90487b4a549b201142c1a97B556',
             abi: JSON.parse(readFileSync('./src/constants/mine-abi/TimeBondDepository.json'))
         },
