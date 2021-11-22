@@ -94,20 +94,28 @@ const deposit = async (value, bondName, /*provider,*/ slippage/*, useAvax*/) => 
 }
 
 
-const redeem = async ( bond,provider, web3 ) => {
+const redeem = async ( bond, receiptAddress ,provider, web3 ) => {
     // const bond = 'MimTime'
-    const receiptAddress = '0xb92667E34cB6753449ADF464f18ce1833Caf26e0'
+    console.log(bond);
 
     // const provider = connectToProvider()
     // const web3 = new Web3(provider)
 
     const [admin, _] = await web3.eth.getAccounts()
+    console.log(admin);
     
     const bondContract = await subscribeToContract(bond, provider, 'Bonds')
     redeemData = await bondContract.methods.redeem(receiptAddress, true)
-    return
     const redeemResult = await sendTransaction(admin, redeemData, contractDetail['Bonds'][bond]['address'],provider)
     return redeemResult;
+}
+
+
+const claimableRewards = async ( bond,provider, web3 ) => {
+    const receiptAddress = '0xb92667E34cB6753449ADF464f18ce1833Caf26e0'    
+    const bondContract = await subscribeToContract(bond, provider, 'Bonds')
+    claimableRewards = await bondContract.pendingPayoutFor(receiptAddress).call()
+    return claimableRewards;
 }
 
 
@@ -127,5 +135,6 @@ const changeApproval = async (bondName, provider, address) => {
 
 module.exports = {
     deposit,
-    redeem
+    redeem,
+    claimableRewards
 }

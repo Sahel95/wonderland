@@ -13,16 +13,20 @@ const contractsDetail = {
         address: '0xFACA6B40DD0130b4Fc4f6b8E4501375E9b623a86',
         abi: JSON.parse(readFileSync('./src/constants/mine-abi/MerkleDistributor.json'))
     },
-    TimeToken : {
-        address: '0xb54f16fB19478766A268F172C9480f8da1a7c9C3',
-        abi: JSON.parse(readFileSync('./src/constants/mine-abi/TimeToken.json'))
-    },
     MEMOries : {
         address: '0x136Acd46C134E8269052c62A67042D6bDeDde3C9',
         abi: JSON.parse(readFileSync('./src/constants/mine-abi/MEMOries.json'))
     },
+    Router : {
+        address: '0x60aE616a2155Ee3d9A68541Ba4544862310933d4',
+        abi: JSON.parse(readFileSync('./src/constants/mine-abi/Router.json'))
+    },
     
     Reserves: {
+        Time : {
+            address: '0xb54f16fB19478766A268F172C9480f8da1a7c9C3',
+            abi: JSON.parse(readFileSync('./src/constants/mine-abi/TimeToken.json'))
+        },
         Mim : {
             address: '0x130966628846BFd36ff31a822705796e8cb8C18D',
             abi: JSON.parse(readFileSync('./src/constants/mine-abi/MimToken.json'))
@@ -44,7 +48,7 @@ const contractsDetail = {
         Mim : { 
             address: '0x694738E0A438d90487b4a549b201142c1a97B556',
             abi: JSON.parse(readFileSync('./src/constants/mine-abi/TimeBondDepository.json'))
-        },
+        },  
         MimTime: {
             address: '0xA184AE1A71EcAD20E822cB965b99c287590c4FFe',
             abi: JSON.parse(readFileSync('./src/constants/abi/bonds/MimTime.json'))

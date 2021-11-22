@@ -11,14 +11,15 @@ const influxWriter = require('./influx/influxWriter')
 
 setAsyncInterval(async () => {
   console.log('start');
-  for (const bond of bonds){
+  // for (const bond of bonds){
     const provider = connectToProvider()
     const web3 = new Web3(provider)
-    let discount = await bondDiscount(bond, provider, web3)
+    let discount = await bondDiscount('Mim', provider, web3)
+    
     discount = discount*100
-    influxWriter(bond, discount)
-  }
+    // influxWriter(bond, discount)
+  // }
   console.log('end');
-}, 60*1000);
+}, 1000);
 
 
