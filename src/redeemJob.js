@@ -40,17 +40,17 @@ const redeemJob = async function(ohmFork){
 
   let i = 0
   while (i < 5) {
-    var gasPrice = await web3.eth.getGasPrice()
-    console.log('1', gasPrice);
     for (const bond of redeemBonds){
+      var gasUnitPrice = await web3.eth.getGasPrice()
       if (isRedeemed[bond] === false){
-        console.log('2::::::::::::::::::::::::::::::', bond);
+        console.log('1 bond ::::::::::::::::::::::::::::::', bond);
+        console.log('2 gasUnitPrice', gasUnitPrice);
         const profit = 0
         const reward = rewardYeild[ohmFork]
         const claimableRewards = await pendingPayoutFor(ohmFork, bond, receiptAddress, provider)
-        console.log(claimableRewards);
+        console.log('3 claimableRewards', claimableRewards);
         if (claimableRewards>0){
-          console.log('3', claimableRewards);
+          
           const bondContract = await subscribeToContract(bond, provider, 'Bonds', ohmFork)
           const redeemData = await bondContract.methods.redeem(receiptAddress, true)
           var count = await web3.eth.getTransactionCount(admin)
@@ -60,8 +60,9 @@ const redeemJob = async function(ohmFork){
             "to"        : contractsDetail['Bonds'][bond]['address'],     
             "data"      : redeemData.encodeABI()
           })
-          console.log('4', gasLimit);
+          console.log('4 gasLimit', gasLimit);
 
+          const gasPrice = gasLimit * gasUnitPrice
           const routerContract = await subscribeToContract('Router', provider)
 
           if (ohmFork === 'Wonderland'){
@@ -72,14 +73,16 @@ const redeemJob = async function(ohmFork){
               index = 2
           }
           
-          // var test = 1000000000000000
-          let gasPriceInToken = await routerContract.methods.getAmountsOut(gasPrice,route).call()
-          gasPriceInToken = web3.utils.fromWei(gasPriceInToken[index],'gwei')
-          console.log('5', gasPriceInToken);
-          if (claimableRewards*reward - gasPriceInToken*gasLimit > profit ){
+          let gasPriceInCurrency = await routerContract.methods.getAmountsOut(gasPrice,route).call()
+          // gasPriceInCurrency = web3.utils.fromWei(gasPriceInCurrency[index],'gwei')
+          console.log('5 gasPriceInCurrency', gasPriceInCurrency[index]);
+          if (claimableRewards*reward - gasPriceInCurrency[index]*gasLimit > profit ){
             redeem(ohmFork, bond, admin, receiptAddress, provider, web3)
+            console.log('claim');
             isRedeemed[bond] = true
             console.log('6', isRedeemed);
+          }else{
+            console.log('NO claim');
           }
         } else {
           isRedeemed[bond] = true

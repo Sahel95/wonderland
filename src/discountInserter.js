@@ -11,7 +11,7 @@ const influxWriter = require('./influx/influxWriter')
 // TODO: add fortress
 setAsyncInterval(async () => {
   console.log('start');
-  for (const bond of bonds){
+  for (const bond of bonds['Wonderland']){
     const provider = connectToProvider()
     const web3 = new Web3(provider)
     let discount = await bondDiscount(bond, provider, web3)
