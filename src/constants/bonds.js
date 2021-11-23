@@ -5,6 +5,9 @@
 //   Wavax: "wavax",
 // };
 
-const Bonds = ['Mim', 'MimTime', 'AvaxTime', 'Wavax']
+const Bonds = {
+    Wonderland : ['Mim', 'MimTime', 'AvaxTime', 'Wavax'],
+    Fortress: ['Wavax', 'Mim', 'FortMim']
+}
 
 module.exports = Bonds
