@@ -3,3 +3,4 @@ exchangetemp.js
 tempBondDetails.js
 /src/temp
 /src/constants/myWallet.js
+/src/influx/client.js

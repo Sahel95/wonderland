@@ -1,6 +1,6 @@
 const connectToProvider = require('./connector')
 const subscribeToContract = require('./subscribeToContract')
-const contractDetail = require('./constants/contractsDetail')
+const contracts = require('./constants/contractsDetail')
 const Tx = require('ethereumjs-tx').Transaction;
 const myWallet = require('./constants/myWallet')
 const Web3 = require('web3')
@@ -34,7 +34,7 @@ const sendTransaction = async (admin, data, contractAddress, provider, value) =>
         "nonce":web3.utils.toHex(count),
         "chainId": web3.utils.toHex(43114)
     };
-
+    console.log('transaction::::::::::::::::::::::::::::',rawTx);
     var tx = new Tx(rawTx, { "common": common }); //chain????
     const privateKey = Buffer.from(myWallet['privateKey'], 'hex')
     tx.sign(privateKey);
@@ -52,7 +52,8 @@ const sendTransaction = async (admin, data, contractAddress, provider, value) =>
 
 
 
-const deposit = async (value, bondName, /*provider,*/ slippage/*, useAvax*/) => {
+const deposit = async (ohmFork, value, bondName, /*provider,*/ slippage/*, useAvax*/) => {
+    const contractDetail = contracts[ohmFork]
     // TODO slipage
     const provider = connectToProvider()
     const web3 = new Web3(provider)
@@ -94,33 +95,25 @@ const deposit = async (value, bondName, /*provider,*/ slippage/*, useAvax*/) => 
 }
 
 
-const redeem = async ( bond, receiptAddress ,provider, web3 ) => {
-    // const bond = 'MimTime'
-    console.log(bond);
-
-    // const provider = connectToProvider()
-    // const web3 = new Web3(provider)
-
-    const [admin, _] = await web3.eth.getAccounts()
-    console.log(admin);
-    
-    const bondContract = await subscribeToContract(bond, provider, 'Bonds')
+const redeem = async (ohmFork, bond, admin, receiptAddress ,provider, web3 ) => {
+    console.log(':::::::::::::::::::::::redeem::::::::::::::::::');
+    const contractDetail = contracts[ohmFork]
+    const bondContract = await subscribeToContract(bond, provider, 'Bonds', ohmFork)
     redeemData = await bondContract.methods.redeem(receiptAddress, true)
     const redeemResult = await sendTransaction(admin, redeemData, contractDetail['Bonds'][bond]['address'],provider)
     return redeemResult;
 }
 
 
-const claimableRewards = async ( bond,provider, web3 ) => {
-    const receiptAddress = '0xb92667E34cB6753449ADF464f18ce1833Caf26e0'    
-    const bondContract = await subscribeToContract(bond, provider, 'Bonds')
-    claimableRewards = await bondContract.pendingPayoutFor(receiptAddress).call()
+const pendingPayoutFor = async (ohmFork, bond, receiptAddress,provider ) => {
+    const bondContract = await subscribeToContract(bond, provider, 'Bonds', ohmFork)
+    claimableRewards = await bondContract.methods.pendingPayoutFor(receiptAddress).call()
     return claimableRewards;
 }
 
 
-const changeApproval = async (bondName, provider, address) => {
-
+const changeApproval = async (ohmFork, bondName, provider, address) => {
+    const contractDetail = contracts[ohmFork]
     // TODO: check allowance then approve
     const reserveContract = await subscribeToContract(bondName, provider, 'Reserves')
     const maxUint256 = web3.utils.toBN('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
@@ -136,5 +129,5 @@ const changeApproval = async (bondName, provider, address) => {
 module.exports = {
     deposit,
     redeem,
-    claimableRewards
+    pendingPayoutFor
 }

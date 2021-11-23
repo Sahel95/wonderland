@@ -30,13 +30,13 @@ const secondsUntilBlock = (startBlock, endBlock) => {
   };
 
 
-const timeUntilRebase = async () => {
+const timeUntilRebase = async (ohmFork) => {
     const provider = connectToProvider()
     const web3 = new Web3(provider)
 
     const currentBlock = await web3.eth.getBlockNumber()
     const currentBlockTime = (await web3.eth.getBlock(currentBlock)).timestamp
-    const stakingContract = subscribeToContract('TimeStaking', provider)
+    const stakingContract = subscribeToContract('Staking', provider, '', ohmFork)
     const epoch = await stakingContract.methods.epoch().call()
     const nextRebase = epoch.endTime;
 
@@ -47,8 +47,8 @@ const timeUntilRebase = async () => {
       }
 }
 
-timeUntilRebase()
-
+// timeUntilRebase('Wonderland')
+// timeUntilRebase('Fortress')
 
 module.exports = timeUntilRebase
 
