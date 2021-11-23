@@ -25,14 +25,14 @@ const getTokenPrice = async (tokenName) => {
 
 
 
-const bondDiscount = async (bond, provider, web3) => {
+const bondDiscount = async (bond, provider, web3, ohmFork='') => {
     // const provider = connectToProvider()
     // const web3 = new Web3(provider)
     let bondDiscount
-    const bondContract = await subscribeToContract(bond, provider, 'Bonds')
+    const bondContract = await subscribeToContract(bond, provider, 'Bonds', ohmFork)
 
     // getMarketPrice
-    const mimTimeContract = await subscribeToContract('MimTime', provider,'Reserves')
+    const mimTimeContract = await subscribeToContract('MimTime', provider,'Reserves', ohmFork)
     console.log('111111111111');
     const reserves = await mimTimeContract.methods.getReserves().call()
     console.log('22222222222222222');
