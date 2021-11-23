@@ -1,6 +1,6 @@
 const Web3 = require('web3')
-const subscribeToContract = require('./subscribeToContract')
-const connectToProvider = require('./connector')
+const subscribeToContract = require('../subscribeToContract')
+const connectToProvider = require('../connector')
 
 const EPOCH_INTERVAL = 28800;
 
@@ -45,6 +45,15 @@ const timeUntilRebase = async (ohmFork) => {
         // return prettifySeconds(seconds);
         return seconds
       }
+}
+
+const getNextRebaseDateTime = async (ohmFork) => {
+  const secondsUntilRebase = await timeUntilRebase(ohmFork);
+  const now = Date.now();
+  const nextRebaseTimestamp = now + (secondsUntilRebase *1000)
+  const nextRebase = new Date(nextRebaseTimestamp);
+  console.log(nextRebase);
+  console.log(`${nextRebase.getUTCHours()} : ${nextRebase.getUTCMinutes()}`);
 }
 
 // timeUntilRebase('Wonderland')
