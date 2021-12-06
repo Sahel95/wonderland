@@ -39,12 +39,12 @@ const redeemJob = async function(ohmFork){
           console.log('1 bond ::::::::::::::::::::::::::::::', bond);
           
           const reward = rewardYeild[ohmFork]
-          const claimableRewards = await pendingPayoutFor(ohmFork, bond, receiptAddress, provider)
+          const claimableRewards = await pendingPayoutFor(ohmFork, bond, receiptAddress, web3)
           console.log('2 claimableRewards', claimableRewards);
           console.log('3 gasUnitPrice', gasUnitPrice);
           if (claimableRewards>0){
             
-            const bondContract = await subscribeToContract(bond, provider, 'Bonds', ohmFork)
+            const bondContract = await subscribeToContract(bond, web3, 'Bonds', ohmFork)
             const redeemData = await bondContract.methods.redeem(receiptAddress, true)
             var count = await web3.eth.getTransactionCount(admin)
             const gasLimit = await web3.eth.estimateGas({
@@ -59,7 +59,7 @@ const redeemJob = async function(ohmFork){
             console.log('5 gasPrice', gasPrice);
             gasPrice = web3.utils.toBN(gasPrice)
             
-            const routerContract = await subscribeToContract('Router', provider)
+            const routerContract = await subscribeToContract('Router', web3)
             if (ohmFork === 'Wonderland'){
                 route = [contractsDetail['Reserves']['Wavax']['address'], contractsDetail['Reserves']['Time']['address']]
                 index = 1
@@ -72,7 +72,7 @@ const redeemJob = async function(ohmFork){
             console.log('6 gasPriceInCurrency', gasPriceInCurrency[index]);
 
             if (claimableRewards*reward - gasPriceInCurrency[index] > 0 ){
-              // redeem(ohmFork, bond, admin, receiptAddress, provider, web3)
+              // redeem(ohmFork, bond, admin, receiptAddress, web3, web3)
               console.log('claim');
               isRedeemed[bond] = true
               console.log('7', isRedeemed);

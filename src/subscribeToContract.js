@@ -3,12 +3,12 @@ const connectToProvider = require('./connector')
 const contracts = require('./constants/contractsDetail')
 
 
-const subscribeToContract = (name, provider, poolType='', ohmFork='') => {
+const subscribeToContract = (name, web3, poolType='', ohmFork='') => {
     let abi, address, contractDetail
     // const provider = connectToProvider()
 
 
-    const web3 = new Web3(provider)
+   
     if (ohmFork !== ''){
         contractDetail = contracts[ohmFork]
     }else{

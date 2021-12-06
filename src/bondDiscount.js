@@ -1,5 +1,6 @@
 const Web3 = require('web3');
 const fetch = require('node-fetch');
+const { writeFile } = require('fs')
 
 const subscribeToContract = require('./subscribeToContract')
 const connectToProvider = require('./connector')
@@ -25,17 +26,13 @@ const getTokenPrice = async (tokenName) => {
 
 
 
-const bondDiscount = async (bond, provider, web3, ohmFork='') => {
-    // const provider = connectToProvider()
-    // const web3 = new Web3(provider)
+const getBondDiscount = async (bond, web3, ohmFork='') => {
     let bondDiscount
-    const bondContract = await subscribeToContract(bond, provider, 'Bonds', ohmFork)
+    const bondContract = await subscribeToContract(bond, web3, 'Bonds', ohmFork)
 
     // getMarketPrice
-    const mimTimeContract = await subscribeToContract('MimTime', provider,'Reserves', ohmFork)
-    console.log('111111111111');
+    const mimTimeContract = await subscribeToContract('MimTime', web3,'Reserves', ohmFork)
     const reserves = await mimTimeContract.methods.getReserves().call()
-    console.log('22222222222222222');
     let marketPrice = reserves[0] / reserves[1]
 
     const mimPrice = await getTokenPrice("MIM");
@@ -43,9 +40,7 @@ const bondDiscount = async (bond, provider, web3, ohmFork='') => {
 
 
     try {
-      console.log('3333333333333333333');
         bondPrice = await bondContract.methods.bondPriceInUSD().call()
-        console.log('444444444444444444444444444');
   
         if (bond === 'AvaxTime') {
           const avaxPrice = await getTokenPrice("AVAX");
@@ -58,7 +53,7 @@ const bondDiscount = async (bond, provider, web3, ohmFork='') => {
     return bondDiscount
 }
 
-module.exports = bondDiscount
+module.exports = getBondDiscount
 
 
 // bondDiscount('AvaxTime')

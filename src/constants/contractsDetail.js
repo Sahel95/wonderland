@@ -9,7 +9,7 @@ const contractsDetail = {
         address: '0xFACA6B40DD0130b4Fc4f6b8E4501375E9b623a86',
         abi: JSON.parse(readFileSync('./src/constants/mine-abi/MerkleDistributor.json'))
     },
-    MEMOries : {
+    Memo : {
         address: '0x136Acd46C134E8269052c62A67042D6bDeDde3C9',
         abi: JSON.parse(readFileSync('./src/constants/mine-abi/MEMOries.json'))
     },
@@ -20,6 +20,14 @@ const contractsDetail = {
     TimeWavaxPair: {
         address: '0xf64e1c5B6E17031f5504481Ac8145F4c3eab4917',
         abi: JSON.parse(readFileSync('./src/constants/mine-abi/JoePair.json'))
+    },
+    JoeRouter:{
+        address: '0x60aE616a2155Ee3d9A68541Ba4544862310933d4',
+        abi: JSON.parse(readFileSync('./src/constants/mine-abi/JoeRouter.json'))
+    },
+    ZapIn:{
+        address: '0x9ABE63C5A2fBcd54c8bAec3553d326356a530cae',
+        abi: JSON.parse(readFileSync('./src/constants/mine-abi/ZapIn.json'))
     },
     Wonderland: {
         Staking : { //stake  & unstake
@@ -55,11 +63,13 @@ const contractsDetail = {
             },  
             MimTime: {
                 address: '0xA184AE1A71EcAD20E822cB965b99c287590c4FFe',
-                abi: JSON.parse(readFileSync('./src/constants/abi/bonds/MimTime.json'))
+                abi: JSON.parse(readFileSync('./src/constants/abi/bonds/MimTime.json')),
+                isLp: true
             },
             AvaxTime: {
                 address: '0xc26850686ce755FFb8690EA156E5A6cf03DcBDE1',
-                abi: JSON.parse(readFileSync('./src/constants/abi/bonds/AvaxTime.json'))
+                abi: JSON.parse(readFileSync('./src/constants/abi/bonds/AvaxTime.json')),
+                isLp: true
             },
             Wavax: {
                 address: '0xE02B1AA2c4BE73093BE79d763fdFFC0E3cf67318',
@@ -87,7 +97,8 @@ const contractsDetail = {
             },
             FortMim: {
                 address: '0x3E5F198B46F3dE52761b02d4aC8ef4cECeAc22D6',
-                abi: JSON.parse(readFileSync('./src/constants/fortressAbi/reserves/FortMim.json'))
+                abi: JSON.parse(readFileSync('./src/constants/fortressAbi/reserves/FortMim.json')),
+                isLp: true
             }
         },
         Bonds:{
