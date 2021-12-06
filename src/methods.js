@@ -39,12 +39,12 @@ const sendTransaction = async (admin, data, contractAddress, web3, exit=false) =
         "nonce":web3.utils.toHex(count),
         "chainId": web3.utils.toHex(43114)
     };
-    // console.log('transaction::::::::::::::::::::::::::::',rawTx);
+    console.log('transaction::::::::::::::::::::::::::::',rawTx);
     var tx = new Tx(rawTx, { "common": common });
     const privateKey = Buffer.from(myWallet['privateKey'], 'hex')
     tx.sign(privateKey);
     var serializedTx = tx.serialize();
-    return '2'
+    // return '2'
     const result = await web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'))
     .on('transactionHash', (hash) => {
         console.log('transactionHash', hash);
@@ -136,10 +136,9 @@ const stake = async (amount, web3) => {
     const [admin, _] = await web3.eth.getAccounts()
 
     let amountInWei = Number(amount) * Math.pow(10, 9)
-
-    
     const contract = await subscribeToContract('StakingHelper', web3)
     const data = await contract.methods.stake(amountInWei, admin)
+    console.log('111111111111');
     const depositResult = await sendTransaction(admin, data, contract._address,web3)
 }
 
